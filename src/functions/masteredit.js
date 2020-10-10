@@ -75,7 +75,7 @@ function mastereditStaff(){
 }
 
 function mastereditService(){
-	Let inputData = {
+	let inputData = {
 		title = "Edit Service",
 		code  = "SER",
 		inputs : [
@@ -124,7 +124,7 @@ function mastereditService(){
 }
 
 function mastereditPatients(){
-	Let inputData = {
+	let inputData = {
 		title = "Edit Pasien",
 		code = "PAT",
 		inputData : [
@@ -172,7 +172,7 @@ function mastereditPatients(){
 }
 
 function mastereditProducts(){
-	Let inputData = {
+	let inputData = {
 		title = "Edit Produk",
 		code = "PRD",
 		inputData : [
