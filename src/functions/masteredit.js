@@ -143,19 +143,25 @@ function mastereditPatients(){
 			type : "textarea"
 		},
 		{
+			label : "No. HP",
+			required : true,
+			text : "",
+			type : "number"
+		},
+		{
 			label : "Tanggal Lahir",
-			required : "true",
+			required : true,
 			text : "",
 			type : "date"
 		},
 		{
-			label : "Status"
+			label : "Status",
 			required : true,
 			text : "1",
 			type : "radio",
 			option : [
 				{
-					label : "Akti",
+					label : "Aktif",
 					value : "1"
 				},
 				{
@@ -192,19 +198,19 @@ function mastereditProducts(){
 		},
 		{
 			label : "Stok",
-			required : "false",
+			required : false,
 			text : "0",
 			type : "text",
 			disabled : true
 		},
 		{
-			label : "Status"
+			label : "Status",
 			required : true,
 			text : "1",
 			type : "radio",
 			option : [
 				{
-					label : "Akti",
+					label : "Aktif",
 					value : "1"
 				},
 				{
