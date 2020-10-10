@@ -75,13 +75,147 @@ function mastereditStaff(){
 }
 
 function mastereditService(){
-
+	Let inputData = {
+		title = "Edit Service",
+		code  = "SER",
+		inputs : [
+		{
+			label : "Nama Layanan",
+			required : true,
+			text : "",
+			placeholder : "Masukan Nama Layanan",
+			type : "text"
+		},
+		{
+			label : "Harga",
+			required : true,
+			text : "",
+			placeholder : "Masukan Harga",
+			type : "currency"
+		},
+		{
+			label : "Kategori",
+			required : true,
+			text : "",
+			type : "select_box",
+			option : ["Klinik", "Salon"]
+		},
+		{
+			label : "Status",
+			required : true,
+			text : "1",
+			type : "radio",
+			option : [
+				{
+					label : "Aktif",
+					value : "1"
+				},
+				{
+					label : "Tidak Aktif",
+					value : "0"
+				}
+			]
+		},
+		],
+		urlToGet  : '/lumeraAPI/master_data/getAllServices.php'
+		urlToPost : '/lumeraAPI/master_data/insertEditServices.php'
+	}
+	return inputData;
 }
 
-function mastereditPatients() {
-
+function mastereditPatients(){
+	Let inputData = {
+		title = "Edit Pasien",
+		code = "PAT",
+		inputData : [
+		{
+			label : "Nama Pasien",
+			required : true,
+			text : "",
+			placeholder : "Masukan Nama Pasien",
+			type : "text"
+		},
+		{
+			label : "Alamat",
+			required : true,
+			text : "",
+			placeholder : "Masukan Alamat",
+			type : "textarea"
+		},
+		{
+			label : "Tanggal Lahir",
+			required : "true",
+			text : "",
+			type : "date"
+		},
+		{
+			label : "Status"
+			required : true,
+			text : "1",
+			type : "radio",
+			option : [
+				{
+					label : "Akti",
+					value : "1"
+				},
+				{
+					label : "Tidak Aktif",
+					value : "0"
+				}
+			]
+		},
+		],
+		urlToGet  : '/lumeraAPI/master_data/getAllPatients.php'
+		urlToPost : '/lumeraAPI/master_data/insertEditPatients.php'
+	}
+	return inputData;
 }
 
 function mastereditProducts(){
-
+	Let inputData = {
+		title = "Edit Produk",
+		code = "PRD",
+		inputData : [
+		{
+			label : "Nama Produk",
+			required : true,
+			text : "",
+			placeholder : "Masukan Nama Produk",
+			type : "text"
+		},
+		{
+			label : "Harga",
+			required : true,
+			text : "",
+			placeholder : "Masukan Harga",
+			type : "currency"
+		},
+		{
+			label : "Stok",
+			required : "false",
+			text : "0",
+			type : "text",
+			disabled : true
+		},
+		{
+			label : "Status"
+			required : true,
+			text : "1",
+			type : "radio",
+			option : [
+				{
+					label : "Akti",
+					value : "1"
+				},
+				{
+					label : "Tidak Aktif",
+					value : "0"
+				}
+			]
+		},
+		],
+		urlToGet  : '/lumeraAPI/master_data/getAllProduct.php'
+		urlToPost : '/lumeraAPI/master_data/insertEditProduct.php'
+	}
+	return inputData;
 }
