@@ -117,7 +117,7 @@ function mastereditService(){
 			]
 		},
 		],
-		urlToGet  : '/lumeraAPI/master_data/getAllServices.php'
+		urlToGet  : '/lumeraAPI/master_data/getAllServices.php',
 		urlToPost : '/lumeraAPI/master_data/insertEditServices.php'
 	}
 	return inputData;
@@ -165,7 +165,7 @@ function mastereditPatients(){
 			]
 		},
 		],
-		urlToGet  : '/lumeraAPI/master_data/getAllPatients.php'
+		urlToGet  : '/lumeraAPI/master_data/getAllPatients.php',
 		urlToPost : '/lumeraAPI/master_data/insertEditPatients.php'
 	}
 	return inputData;
@@ -214,7 +214,7 @@ function mastereditProducts(){
 			]
 		},
 		],
-		urlToGet  : '/lumeraAPI/master_data/getAllProduct.php'
+		urlToGet  : '/lumeraAPI/master_data/getAllProduct.php',
 		urlToPost : '/lumeraAPI/master_data/insertEditProduct.php'
 	}
 	return inputData;
