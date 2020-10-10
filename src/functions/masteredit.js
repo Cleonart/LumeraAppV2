@@ -1,3 +1,12 @@
+
+/*
+	CODE
+	STF : Staff
+	PAT : Patients
+	SER : Service
+	PRD : Product
+*/
+
 export function masterData(){
 
 	let master = {
