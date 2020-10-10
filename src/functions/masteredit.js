@@ -127,7 +127,7 @@ function mastereditPatients(){
 	let inputData = {
 		title : "Edit Pasien",
 		code : "PAT",
-		inputData : [
+		inputs : [
 		{
 			label : "Nama Pasien",
 			required : true,
@@ -181,7 +181,7 @@ function mastereditProducts(){
 	let inputData = {
 		title : "Edit Produk",
 		code : "PRD",
-		inputData : [
+		inputs : [
 		{
 			label : "Nama Produk",
 			required : true,
