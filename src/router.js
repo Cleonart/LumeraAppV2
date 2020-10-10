@@ -21,6 +21,11 @@ export default new Router({
           component: () => import(/* webpackChunkName: "demo" */ './views/Dashboard.vue')
         },
         {
+          path: '/pos/transaction/new',
+          name: 'newpos',
+          component: () => import(/* webpackChunkName: "demo" */ './views/Pos/posNew.vue')
+        },
+        {
           path: '/master/:selector',
           name: 'master',
           component: () => import(/* webpackChunkName: "demo" */ './views/Master/Masterdata.vue')

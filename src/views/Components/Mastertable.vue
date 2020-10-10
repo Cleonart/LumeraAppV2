@@ -16,7 +16,7 @@
                         addon-left-icon="ni ni-zoom-split-in"></base-input>
           </div>
           <div class="col-md-4 pl-1">
-            <router-link to="/order/tambah">
+            <router-link :to="'/master/' + title + '/add'">
               <base-button class="w-100" type="primary" icon="ni ni-fat-add">Baru</base-button>
             </router-link>
           </div>
@@ -81,8 +81,10 @@
                 <i class="ni ni-bullet-list-67" style="color:#000"></i>
               </a>
               <template>
-                <a class="dropdown-item">Buka Data</a>
-                <a class="dropdown-item" href="#">Printout</a>
+                <router-link :to="'/master/' + title + '/' + row[0].data">
+                  <a class="dropdown-item" style="color:#000">Buka Data</a>
+                </router-link>
+                <!--<a class="dropdown-item" href="#">Printout</a>-->
               </template>
             </base-dropdown>
           </td>

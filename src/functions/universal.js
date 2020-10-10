@@ -3,10 +3,10 @@ export let baseURL = "http://127.0.0.1";
 
 // generate random number id
 // return INT - Random Number between 1000000 to 9999999
-export function generateId(){
+export function generateId(prefix=""){
 	let min    = 1000000; 
 	let max    = 9999999;
-	let random = Math.floor(Math.random() * (+max + 1 - +min)) + +min; 
+	let random = prefix + Math.floor(Math.random() * (+max + 1 - +min)) + +min; 
 	return random;
 }
 

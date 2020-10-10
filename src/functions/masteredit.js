@@ -1,6 +1,18 @@
-export function mastereditStaff(){
+export function masterData(){
+
+	let master = {
+		Staff    : mastereditStaff(),
+		Service  : mastereditService(),
+		Patients : mastereditPatients(),
+		Product  : mastereditProducts()
+	}
+	return master;
+}
+
+function mastereditStaff(){
 	let inputData = {
 		title : "Edit Staff",
+		code  : "STF",
 		inputs : [
 			{
 				label : "Nama Staf",
@@ -26,7 +38,7 @@ export function mastereditStaff(){
 			{
 				label : "Posisi",
 				required : true,
-				text : "",
+				text : "-PILIH-",
 				type : "select_box",
 				option : ["Administrator", "Kasir", "Clinician", "Stylist", "Hair Washer"]
 			},
@@ -46,7 +58,21 @@ export function mastereditStaff(){
 					}
 				]
 			}
-		]
+		],
+		urlToGet  : '/lumeraAPI/master_data/getAllStaff.php',
+		urlToPost : '/lumeraAPI/master_data/insertEditStaff.php' 
 	}
 	return inputData;
+}
+
+function mastereditService(){
+
+}
+
+function mastereditPatients() {
+
+}
+
+function mastereditProducts(){
+
 }
