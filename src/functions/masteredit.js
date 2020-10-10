@@ -76,8 +76,8 @@ function mastereditStaff(){
 
 function mastereditService(){
 	let inputData = {
-		title = "Edit Service",
-		code  = "SER",
+		title : "Edit Service",
+		code  : "SER",
 		inputs : [
 		{
 			label : "Nama Layanan",
@@ -125,8 +125,8 @@ function mastereditService(){
 
 function mastereditPatients(){
 	let inputData = {
-		title = "Edit Pasien",
-		code = "PAT",
+		title : "Edit Pasien",
+		code : "PAT",
 		inputData : [
 		{
 			label : "Nama Pasien",
@@ -173,8 +173,8 @@ function mastereditPatients(){
 
 function mastereditProducts(){
 	let inputData = {
-		title = "Edit Produk",
-		code = "PRD",
+		title : "Edit Produk",
+		code : "PRD",
 		inputData : [
 		{
 			label : "Nama Produk",
