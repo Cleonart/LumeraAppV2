@@ -11,7 +11,7 @@ export function masterData(){
 
 	let master = {
 		Staff    : mastereditStaff(),
-		Service  : mastereditService(),
+		Services  : mastereditService(),
 		Patients : mastereditPatients(),
 		Product  : mastereditProducts()
 	}
@@ -96,7 +96,7 @@ function mastereditService(){
 		{
 			label : "Kategori",
 			required : true,
-			text : "",
+			text : "-PILIH-",
 			type : "select_box",
 			option : ["Klinik", "Salon"]
 		},

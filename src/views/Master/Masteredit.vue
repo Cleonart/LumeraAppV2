@@ -27,6 +27,20 @@
 										:placeholder="form.placeholder"
 										style="margin-bottom:10px"></base-input>
 
+							<!-- currency field -->
+							<base-input v-if="form.type == 'currency'" 
+										type="number"
+										v-model="form.text" 
+										:required="form.required"
+										:placeholder="form.placeholder"
+										style="margin-bottom:10px"></base-input>
+
+							<base-input v-if="form.type == 'currency'" 
+										type="text"
+										:value="formatRupiah(form.text)"
+										disabled
+										style="margin-bottom:10px"></base-input>
+
 							<!-- select box -->
 							<select v-if="form.type == 'select_box'" 
 									v-model="form.text" 
@@ -79,7 +93,7 @@
 	import flatPicker from "vue-flatpickr-component";
 	import "flatpickr/dist/flatpickr.css";
 	import {masterData} from "../../functions/masteredit.js"; 
-	import {baseURL, generateId} from "../../functions/universal.js"; 
+	import {baseURL, generateId, formatRupiah} from "../../functions/universal.js"; 
 	const axios = require('axios');
 	
 	export default{
@@ -214,6 +228,10 @@
 
 			goBack : function () {
 				window.history.go(-1);
+			},
+
+			formatRupiah : function (value) {
+				return formatRupiah(value, "Rp. ");
 			}
 
 		},
@@ -226,6 +244,7 @@
 
 			// on start
 			this.forms     = masterData()[this.selector].inputs;
+			console.log(masterData());
 			this.urlToGet  = baseURL + masterData()[this.selector].urlToGet + "?id=" + this.masteredit_mode;
 			this.urlToPost = baseURL + masterData()[this.selector].urlToPost;
 			this.code      = masterData()[this.selector].code;
