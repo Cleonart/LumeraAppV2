@@ -33,22 +33,31 @@
 						<base-table class="table align-items-center table-flush"
 									thead-classes="thead-light"
 									tbody-classes="list"
-									:data="tableData">
+									:data="filteredData">
 							<template slot="columns">
 								<th>Nama PRD/SER</th>
 								<th>Harga</th>
 								<th v-if="selectBar == 'Produk'">Stok</th>
+								<th>Aksi</th>
 							</template>
 							<template slot-scope="{row}">
-								<td>{{row.item_name}}</td>
-								<td>{{row.item_qty}}</td>
+								<td><b>{{row.item_name}}</b></td>
+								<td>{{formatRupiah(row.item_price)}}</td>
+								<td v-if="selectBar == 'Produk'">{{row.item_stock}}</td>
+								<td>
+									<base-button type="primary" icon="ni ni-fat-add" style="height:37px;width:37px;padding-left:10px"
+									@click="addToCheckout(row)"></base-button>
+								</td>
 							</template>
 						</base-table>
+						<p v-if="filteredData.length == 0"
+							style="font-weight:bold;text-align:center;opacity:0.7"
+							class="mt-4 mb-3">Item tidak ditemukan :(</p>
 					</div>
 				</div>
 			</div>
 			<div class="col-lg-6">
-				<posCheckout></posCheckout>
+				<posCheckout ref="posCheckout"></posCheckout>
 			</div>
 		</div>
 	</div>
@@ -56,9 +65,9 @@
 
 <script>
 	
-	import {generateId} from '../../functions/universal.js';
+	import {generateId, baseURL, formatRupiah} from '../../functions/universal.js';
 	import posCheckout from './Components/posCheckout';
-	//const axios = require('axios');
+	const axios = require('axios');
 	
 	export default {
 		name: 'projects-table',
@@ -66,22 +75,65 @@
 			return{
 				id : '',
 				selectBar : 'Layanan Salon',
-				searchBar : ''
+				searchBar : '',
+				itemData : []
 			}
+		},
+
+		methods : {
+			
+			addToCheckout : function (value) {
+				var app = this;
+				this.$swal.fire({
+					title: 'Tambahkan ke Checkout?',
+					text: "Tambahkan item " + value.item_name + " ke Checkout",
+					icon: 'warning',
+					showCancelButton: true,
+					confirmButtonColor: '#172b4d',
+					cancelButtonColor: '#d33',
+					confirmButtonText: 'Ya, Tambahkan'
+				}).then((result) => {
+					if (result.isConfirmed) {
+						app.$swal.fire('Berhasil Ditambahkan','Item berhasil ditambahkan ke dalam checkout',
+							'success'
+							);
+						app.$refs.posCheckout.addToCheckout(value);
+					}
+				})
+			},
+
+			getProductServicesData : function () {
+				var app = this;
+				axios.get(baseURL + "/lumeraAPI/pos_purchase/getAllProductServiceData.php")
+					.then(function(response) {
+						app.itemData = response.data.embed_item;
+						console.log(response);
+					})
+					.catch(function(error) {
+						console.log(error);
+					})
+			},
+
+			formatRupiah : function (value) {
+				return formatRupiah(value, "Rp. ");
+			}
+
 		},
 
 		created(){
 			this.id = generateId("LMR");
+			this.getProductServicesData();
 		},
 
 		computed: {
-			/*filteredData() {
-				/*
-				return this.Masterdata.raw_data.filter(tableData => {
-					let data = tableData[this.settings.search_index].data.toLowerCase().includes(this.search.toLowerCase()); 
-					return data;
+			filteredData() {
+				return this.itemData.filter(itemData => {
+					if(this.selectBar == itemData.item_category){
+						let data = itemData.item_name.toLowerCase().includes(this.searchBar.toLowerCase()); 
+						return data;
+					}
 				})
-			}*/
+			}
 		},
 
 		components: {

@@ -23,11 +23,20 @@
 					</template>
 					<template slot-scope="{row}">
 						<td>{{row.item_name}}</td>
-						<td>{{row.item_qty}}</td>
+						<td>
+							<input  class="pt-1 pb-1 pr-0" 
+									style="width:50px;text-align:center;border-radius:5px;border:none"
+									type="number"
+									v-model="row.item_qty"
+									max="10"/>
+						</td>
 						<td>{{formatRupiah(row.item_price)}}</td>
 						<td>{{formatRupiah(row.item_price * row.item_qty)}}</td>
 					</template>
 				</base-table>
+				<p v-if="tableData.length == 0"
+							style="font-weight:bold;text-align:center;"
+							class="mt-4 mb-3">Checkout kosong :(</p>
 			</div>
 		</div>
 	</div>
@@ -41,24 +50,23 @@
 		name : 'posCheckout',
 		data(){
 			return{
-				tableData : [
-					{
-						item_id   : "tes",
-						item_name : "name",
-						item_qty  : 1,
-						item_price : 10000
-					},
-					{
-						item_id   : "tes",
-						item_name : "Sanitizer",
-						item_qty  : 3,
-						item_price : 10000
-					},
-				]
+				tableData : []
 			}
 		},
 
 		methods : {
+			
+			addToCheckout : function (value) {
+				var data = this.tableData;
+				data.push({
+					item_id    : value.item_id,
+					item_name  : value.item_name,
+					item_qty   : 1,
+					item_price : value.item_price
+				});
+				console.log(data);
+			},
+
 			formatRupiah :function (value) {
 				return formatRupiah(String(value), "Rp.");
 			},
