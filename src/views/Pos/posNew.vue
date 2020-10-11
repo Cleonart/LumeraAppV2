@@ -1,7 +1,7 @@
 <template>
 	<div class="container p-5">
 		<div class="row">
-			<div class="col-lg-6">
+			<div class="col-lg-7">
 				<h2>Buat Transaksi Baru</h2>
 				<badge type="warning mr-2">Transaksi Baru</badge>
 				<badge type="primary">{{id}}</badge>
@@ -56,7 +56,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-lg-6">
+			<div class="col-lg-5">
 				<posCheckout ref="posCheckout"></posCheckout>
 			</div>
 		</div>
@@ -76,7 +76,8 @@
 				id : '',
 				selectBar : 'Layanan Salon',
 				searchBar : '',
-				itemData : []
+				itemData : [],
+				staffData : []
 			}
 		},
 
@@ -84,22 +85,45 @@
 			
 			addToCheckout : function (value) {
 				var app = this;
-				this.$swal.fire({
-					title: 'Tambahkan ke Checkout?',
-					text: "Tambahkan item " + value.item_name + " ke Checkout",
-					icon: 'warning',
-					showCancelButton: true,
-					confirmButtonColor: '#172b4d',
-					cancelButtonColor: '#d33',
-					confirmButtonText: 'Ya, Tambahkan'
-				}).then((result) => {
-					if (result.isConfirmed) {
-						app.$swal.fire('Berhasil Ditambahkan','Item berhasil ditambahkan ke dalam checkout',
-							'success'
-							);
-						app.$refs.posCheckout.addToCheckout(value);
-					}
-				})
+				if(value.item_category == "Produk"){
+					this.$swal.fire({
+						title: 'Tambahkan ke Checkout?',
+						text: "Tambahkan item " + value.item_name + " ke Checkout",
+						icon: 'warning',
+						showCancelButton: true,
+						confirmButtonColor: '#172b4d',
+						cancelButtonColor: '#d33',
+						confirmButtonText: 'Ya, Tambahkan'
+					}).then((result) => {
+						if (result.isConfirmed) {
+							app.$swal.fire('Berhasil Ditambahkan','Item berhasil ditambahkan ke dalam checkout',
+								'success'
+								);
+							app.$refs.posCheckout.addToCheckout(value);
+						}
+					})
+				}
+				else{
+					var staff = [];
+					for(var i = 0; i < this.staffData.length; i++){
+						staff[i] = this.staffData[i].staff_name;
+					} 	
+
+					this.$swal.fire({
+						title: 'Pilih Sytlist/Clinician',
+						input: "select",
+						inputOptions: staff,
+						inputPlaceholder: 'Silahkan pilih disini',
+						showCancelButton: true,
+					}).then(function (result) {
+						if(result.value != undefined && result.value != ""){
+							value.item_handler = staff[result.value];
+							app.$refs.posCheckout.addToCheckout(value);
+							app.$swal.fire('Berhasil Ditambahkan','Item berhasil ditambahkan ke dalam checkout','success');
+						}
+						
+					})
+				}
 			},
 
 			getProductServicesData : function () {
@@ -107,6 +131,7 @@
 				axios.get(baseURL + "/lumeraAPI/pos_purchase/getAllProductServiceData.php")
 					.then(function(response) {
 						app.itemData = response.data.embed_item;
+						app.staffData = response.data.embed_staff;
 						console.log(response);
 					})
 					.catch(function(error) {
