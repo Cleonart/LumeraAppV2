@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<div class="card shadow bg-default" style="height:525px">
+		<div class="card shadow bg-default" style="height:600">
 			<div class="card-header border-0 bg-transparent">
 				<div class="row align-items-center">
 					<div class="col">
@@ -10,7 +10,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="table-responsive pb-2" style="height:310px;">
+			<div class="table-responsive pb-2" style="height:320px;">
 				<base-table class="table align-items-center table-flush table-dark"
 							thead-classes="thead-dark text-white"
 							tbody-classes="list"
@@ -61,9 +61,14 @@
 					<div class="col-sm-6" style="font-size:23px;"><b>Total</b>({{tableData.length}})</div>
 					<div class="col-sm-6 text-right" style="font-size:23px;">{{total}}</div>
 				</div>
-
 			</div>
-
+			<div class="container" style="margin-top:0px;padding-left:35px;padding-right:35px;margin-bottom:20px;margin-top:-10px">
+				<div class="row">
+					<base-button class="col" type="primary mt-2">Selesai</base-button>
+					<base-button class="col" type="success mt-2">Simpan</base-button>
+					<base-button class="col" type="danger mt-2">Batal</base-button>
+				</div>
+			</div>
 		</div>
 	</div>
 </template>
