@@ -7,6 +7,7 @@
 				<badge type="primary">{{id}}</badge>
 
 				<div class="card shadow mt-4">
+
 					<div class="card-header border-0">
 						<div class="row align-items-center">
 							<div class="col">
@@ -20,7 +21,7 @@
 									<option>Layanan Klinik</option>
 									<option>Layanan Salon</option>
 									<option>Produk</option>
-								</select>
+								</select> 
 							</div>
 						</div>
 						<hr class="mt-3 mb-3">
@@ -29,6 +30,7 @@
 									addon-left-icon="ni ni-zoom-split-in"
 									class="mb-0"></base-input>
 					</div>
+
 					<div class="table-responsive pb-2">
 						<base-table class="table align-items-center table-flush"
 									thead-classes="thead-light"
@@ -54,8 +56,11 @@
 							style="font-weight:bold;text-align:center;opacity:0.7"
 							class="mt-4 mb-3">Item tidak ditemukan :(</p>
 					</div>
+
 				</div>
+
 			</div>
+			
 			<div class="col-lg-5">
 				<posCheckout ref="posCheckout"></posCheckout>
 			</div>
@@ -84,14 +89,16 @@
 		methods : {
 			
 			addToCheckout : function (value) {
+
 				var app = this;
+
 				if(value.item_category == "Produk"){
 					this.$swal.fire({
 						title: 'Tambahkan ke Checkout?',
 						text: "Tambahkan item " + value.item_name + " ke Checkout",
 						icon: 'warning',
 						showCancelButton: true,
-						confirmButtonColor: '#172b4d',
+						confirmButtonColor: '#5e72e4',
 						cancelButtonColor: '#d33',
 						confirmButtonText: 'Ya, Tambahkan'
 					}).then((result) => {
@@ -103,6 +110,7 @@
 						}
 					})
 				}
+
 				else{
 					var staff = [];
 					for(var i = 0; i < this.staffData.length; i++){
