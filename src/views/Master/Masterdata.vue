@@ -58,6 +58,10 @@
             url : '/pos_purchase/getAllInventaris.php'
           },
 
+          "Transaksi" : {
+            url : '/pos_purchase/getAllInventaris.php'
+          },
+
           "Services" : {
             url : '/master_data/getAllServices.php'
           }
