@@ -4,7 +4,8 @@
       <template slot="links">
 
         <sidebar-item :link="{name: 'Dashboard', icon: 'ni ni-tv-2 text-blue', path: '/dashboard'}"/>
-        <sidebar-item :link="{name: 'Transaksi Baru', icon: 'ni ni-money-coins text-blue', path: '/pos/transaction/new'}"/>
+        <sidebar-item :link="{name: 'Transaksi Baru', icon: 'ni ni-money-coins text-blue', path: '/pos/trx/new'}"/>
+        <sidebar-item :link="{name: 'Inventaris Baru', icon: 'ni ni-money-coins text-blue', path: '/pos/inv/new'}"/>
 
         <h6 class="navbar-heading text-muted ml-4 mb-0 mt-3">Master Data <i class="ni ni-bold-down"></i></h6>
         <span>

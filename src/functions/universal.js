@@ -85,3 +85,21 @@ export function formatTanggal(formattedtanggal){
     
     return format[2] + " " + bulan + " " + format[0];
   }
+
+export function showLoading(swal, title="Mohon tunggu", text="Sedang mengambil data.."){
+	swal({
+		icon: 'warning',
+		title: title,
+		text: text,
+		allowOutsideClick: false,
+		showConfirmButton: false,
+		timerProgressBar: true,
+		onBeforeOpen: () => {
+			swal.showLoading()
+		},
+	});
+}
+
+export function hideLoading(swal){
+	swal.close();
+}

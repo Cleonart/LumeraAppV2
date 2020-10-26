@@ -70,8 +70,8 @@
 			</div>
 			<div class="container" style="margin-top:0px;padding-left:35px;padding-right:35px;margin-bottom:20px;margin-top:-10px">
 				<div class="row">
-					<base-button class="col" type="primary mt-2">Selesai</base-button>
-					<base-button class="col" type="success mt-2" @click="save()">Simpan</base-button>
+					<base-button class="col" type="primary mt-2" @click="checkout('fixed')"><i class="ni ni-money-coins mr-2"></i>Bayar</base-button>
+					<base-button class="col" type="success mt-2" @click="checkout('update')">Simpan</base-button>
 					<base-button class="col" type="danger mt-2">Batal</base-button>
 				</div>
 			</div>
@@ -81,11 +81,12 @@
 
 <script> 
 
-	import {baseURL, formatRupiah} from '../../../functions/universal.js';
+	import {baseURL, formatRupiah, showLoading} from '../../../functions/universal.js';
 	const axios = require('axios');
 
 	export default{
 		name : 'posCheckout',
+		props : ['id'],
 		data(){
 			return{
 				tableData : [],
@@ -114,13 +115,23 @@
 
 		methods : {
 
-			checkout : function () {
+			checkout : function(mode) {
+				var app = this;
+				let url = baseURL + "/lumeraAPI/pos_purchase/transactionSave.php";
+				let transaction_id = this.id;
+				let transaction_amount = this.total;
 				
-			},
-
-			save : function () {
-				
-				let url = baseURL + "/lumeraAPI/pos_purchase/purchaseSave.php";
+				const json_data = JSON.stringify({
+					transaction_body : { 
+						transaction_id           : transaction_id,
+						transaction_amount       : transaction_amount,
+						transaction_mode         : mode,
+						transaction_created_date : "",
+						transaction_updated_date : "",
+						transaction_fixed_date   : "",
+					},
+					transaction_items : app.tableData
+				});
 
 				// validate checkout items
 				// keranjang kosong
@@ -132,19 +143,45 @@
 				}
 
 				// keranjang ada item
-				else{	
-					const json = JSON.stringify({ answer: 42 });
-					console.log(json);
-					
-					axios.post(url, json)
-						.then(function(response){
-							console.log(response);
-						})
-						.catch(function(error){
-							console.log(error);
-						})
-				}
+				else{
+					let title = "";
+					let text  = "";
+					let confirmText = "";
 
+					if(mode == "fixed"){
+						title = "Anda yakin akan melakukan pembayaran transaksi ini?";
+						text  = "Transaksi akan dicatat setelah pembayaran dikonfirmasi, perubahan data sudah tidak bisa dilakukan setelah proses ini";
+						confirmText = "Ya, Bayar";
+					}
+
+					else if(mode == "update"){
+						title = "Anda yakin akan menyimpan transaksi ini?";
+						text  = "Transaksi masih dapat dirubah sesuai dengan kebutuhan";
+						confirmText = "Ya, Simpan";
+					}
+
+					this.$swal.fire({
+						title: title,
+						text: text,
+						icon: 'warning',
+						showCancelButton: true,
+						confirmButtonColor: '#5e72e4',
+						cancelButtonColor: '#d33',
+						confirmButtonText: confirmText
+					}).then((result) => {
+						if (result.isConfirmed) {
+							showLoading(this.$swal);
+							axios.post(url, json_data)
+								.then(function(response){
+									console.log(response);
+									app.$swal("Proses Berhasil", "Transaksi dan Perubahan data berhasil dilakukan", "success");
+								})
+								.catch(function(error){
+									console.log(error);
+								})
+						}
+					})
+				}
 			},
 
 			cancel : function () {
@@ -174,13 +211,23 @@
 					}
 				}
 
+				let handler;
+				let handler_id = null;
+				let handler_name = null;
+				if(value.item_handler != undefined && value.item_handler != "undefined"){
+					handler = value.item_handler.split(".");
+					handler_id = handler[0];
+					handler_name = handler[1];
+				}
+
 				this.tableData.push({
 					item_id    : value.item_id,
 					item_name  : value.item_name,
 					item_qty   : 1,
 					item_price : value.item_price,
 					item_category : value.item_category,
-					item_handler : value.item_handler
+					item_handler_id : handler_id,
+					item_handler : handler_name
 				});
 
 				return "SUCCESS";

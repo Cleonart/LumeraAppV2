@@ -12,7 +12,7 @@
 						<div class="row align-items-center">
 							<div class="col">
 								<h3 class="mb-0">
-									Daftar PRD/SER
+									Daftar {{title}}
 								</h3>
 							</div>
 							<div class="col text-right">
@@ -37,7 +37,7 @@
 									tbody-classes="list"
 									:data="filteredData">
 							<template slot="columns">
-								<th>Nama PRD/SER</th>
+								<th>Nama {{title}}</th>
 								<th>Harga</th>
 								<th v-if="selectBar == 'Produk'">Stok</th>
 								<th>Aksi</th>
@@ -62,7 +62,7 @@
 			</div>
 			
 			<div class="col-lg-5">
-				<posCheckout ref="posCheckout"></posCheckout>
+				<posCheckout :id="id" ref="posCheckout"></posCheckout>
 			</div>
 		</div>
 	</div>
@@ -70,7 +70,7 @@
 
 <script>
 	
-	import {generateId, baseURL, formatRupiah} from '../../functions/universal.js';
+	import {generateId, baseURL, formatRupiah, showLoading, hideLoading} from '../../functions/universal.js';
 	import posCheckout from './Components/posCheckout';
 	const axios = require('axios');
 	
@@ -78,6 +78,7 @@
 		name: 'projects-table',
 		data(){
 			return{
+				title : '',
 				id : '',
 				selectBar : 'Layanan Salon',
 				searchBar : '',
@@ -114,8 +115,8 @@
 				else{
 					var staff = [];
 					for(var i = 0; i < this.staffData.length; i++){
-						staff[i] = this.staffData[i].staff_name;
-					} 	
+						staff[i] = this.staffData[i].staff_id + "." + this.staffData[i].staff_name;
+					}
 
 					this.$swal.fire({
 						title: 'Pilih Sytlist/Clinician',
@@ -141,6 +142,7 @@
 						app.itemData = response.data.embed_item;
 						app.staffData = response.data.embed_staff;
 						console.log(response);
+						hideLoading(app.$swal);
 					})
 					.catch(function(error) {
 						console.log(error);
@@ -149,24 +151,45 @@
 
 			formatRupiah : function (value) {
 				return formatRupiah(value, "Rp. ");
+			},
+
+			onMounted : function () {
+				showLoading(this.$swal);
+
+				let id = this.$route.params.id;
+				let type = this.$route.params.type;
+
+				// jika transaksi baru
+				if(id == "new"){
+					this.id = generateId(type.toUpperCase());
+					this.getProductServicesData();
+				}
+
+				// jika transaksi merupakan transaksi lama
+				else{
+					alert("tes");
+				}
 			}
 
 		},
 
+		watch : {
+			'$route.params.type': function (val) {
+				this.id = generateId(val.toUpperCase());
+
+				if(val == "trx"){
+					this.title = "PRD/SER";
+				}
+
+				else if(val == "inv"){
+					this.title = "Inventaris"
+				}
+				this.onMounted();
+			}
+		},
+
 		mounted(){
-			let id = this.$route.params.id;
-
-			// jika transaksi baru
-			if(id == "new"){
-				this.id = generateId("LMR");
-				this.getProductServicesData();
-			}
-
-			// jika transaksi merupakan transaksi lama
-			else{
-				alert("tes");
-			}
-
+			this.onMounted();
 		},
 
 		computed: {
