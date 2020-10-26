@@ -153,9 +153,20 @@
 
 		},
 
-		created(){
-			this.id = generateId("LMR");
-			this.getProductServicesData();
+		mounted(){
+			let id = this.$route.params.id;
+
+			// jika transaksi baru
+			if(id == "new"){
+				this.id = generateId("LMR");
+				this.getProductServicesData();
+			}
+
+			// jika transaksi merupakan transaksi lama
+			else{
+				alert("tes");
+			}
+
 		},
 
 		computed: {

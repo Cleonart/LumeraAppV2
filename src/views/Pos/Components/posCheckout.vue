@@ -81,7 +81,8 @@
 
 <script> 
 
-	import {formatRupiah} from '../../../functions/universal.js';
+	import {baseURL, formatRupiah} from '../../../functions/universal.js';
+	const axios = require('axios');
 
 	export default{
 		name : 'posCheckout',
@@ -119,12 +120,29 @@
 
 			save : function () {
 				
+				let url = baseURL + "/lumeraAPI/pos_purchase/purchaseSave.php";
+
 				// validate checkout items
+				// keranjang kosong
 				if(this.tableData.length == 0){
 					this.$swal.fire("Checkout kosong", 
 									"Tidak bisa menyimpan transaksi karena tidak ada item yang dipilih", 
 									"error");
 					return 0;
+				}
+
+				// keranjang ada item
+				else{	
+					const json = JSON.stringify({ answer: 42 });
+					console.log(json);
+					
+					axios.post(url, json)
+						.then(function(response){
+							console.log(response);
+						})
+						.catch(function(error){
+							console.log(error);
+						})
 				}
 
 			},
@@ -165,6 +183,19 @@
 					item_handler : value.item_handler
 				});
 
+				return "SUCCESS";
+			},
+
+			insertDataFromParent : function(){
+				alert("henlo");
+				this.tableData.push({
+					item_id    : "value.item_id",
+					item_name  : "value.item_name",
+					item_qty   : 1,
+					item_price : 200,
+					item_category : "value.item_category",
+					item_handler : "value.item_handler"
+				});
 				return "SUCCESS";
 			},
 
