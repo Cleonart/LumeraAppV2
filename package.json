@@ -24,6 +24,7 @@
     "jspdf-autotable": "^3.5.9",
     "nouislider": "14.6.0",
     "pdfmake": "^0.1.66",
+    "recta": "^1.0.0",
     "register-service-worker": "1.7.1",
     "vue": "2.6.11",
     "vue-chartjs": "3.5.0",

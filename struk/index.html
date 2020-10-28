@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <style type="text/css">
+            *{
+                font-size: 12px;
+            }
+            .logo{
+                width:80px;
+                position:relative;
+                left:50%;
+                transform:translateX(-50%);
+            }
+            .address{
+                text-align: center;
+                margin-bottom: -10px;
+            }
+            .divider{
+                text-align: center;
+            }
+        </style>
+        <title>Receipt example</title>
+    </head>
+    <body>
+        <div class="ticket">
+            <img class="logo" src="./lumera_bw.png" style="" alt="Logo">
+            <p class="address">Wenang - Manado 082190886467 <br/>
+            Jl. Garuda No.10, Mahakeret Barat</p>
+            <p class="divider">-----------------------------------------------</p>
+            <p>Tanggal</p>
+            <p>----------------------</p>
+            <table>
+                <tbody>
+                    <tr>
+                        <td class="quantity" style="margin-right:10px">ARDUINO UNO R3</td>
+                        <td class="description">1</td>
+                        <td class="price">8500</td>
+                        <td class="price">8500</td>
+                    </tr>
+                    <tr>
+                        <td class="quantity">JAVASCRIPT BOOK</td>
+                        <td class="description">2</td>
+                        <td class="price">8500</td>
+                        <td class="price">8500</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p>Diskon (0%) : Rp. 0</p>
+            <p class="centered">Terima kasih telah mempercayakan lumera beauty care manado
+                <br>parzibyte.me/blog</p>
+        </div>
+        <button id="btnPrint" class="hidden-print">Print</button>
+        <script>
+            const $btnPrint = document.querySelector("#btnPrint");
+            $btnPrint.addEventListener("click", () => {
+                window.print();
+            });
+        </script>
+    </body>
+</html>
