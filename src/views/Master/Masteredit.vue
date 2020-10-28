@@ -55,7 +55,7 @@
 										addon-left-icon="ni ni-calendar-grid-58">
 								<flat-picker slot-scope="{focus, blur}"
 												style="background-color:#fff;margin-bottom:10px"
-												:config="{dateFormat:'d-m-Y'}"
+												:config="{dateFormat:'Y-m-d'}"
 												@on-open="focus"
 												@on-close="blur"
 												class="form-control datepicker"

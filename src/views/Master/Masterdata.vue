@@ -59,7 +59,7 @@
           },
 
           "Transaksi" : {
-            url : '/pos_purchase/getAllInventaris.php'
+            url : '/pos_purchase/getTransactionData.php'
           },
 
           "Services" : {

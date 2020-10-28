@@ -62,7 +62,7 @@
 			</div>
 			
 			<div class="col-lg-5">
-				<posCheckout :id="id" ref="posCheckout"></posCheckout>
+				<posCheckout :name="name" :status="status" :id="id" ref="posCheckout"></posCheckout>
 			</div>
 		</div>
 	</div>
@@ -80,6 +80,8 @@
 			return{
 				title : '',
 				id : '',
+				status : '',
+				name : 'Nama Pelanggan',
 				selectBar : 'Layanan Salon',
 				searchBar : '',
 				itemData : [],
@@ -142,6 +144,23 @@
 						app.itemData = response.data.embed_item;
 						app.staffData = response.data.embed_staff;
 						console.log(response);
+						//hideLoading(app.$swal);
+					})
+					.catch(function(error) {
+						console.log(error);
+					})
+			},
+
+			getExistingTransaction : function(id){
+				var app = this;
+				axios.get(baseURL + "/lumeraAPI/pos_purchase/getTransactionSalesById.php?id=" + id)
+					.then(function(response) {
+						app.itemData = response.data.embed_item;
+						app.staffData = response.data.embed_staff;
+						app.id = response.data.transaction_data.transaction_id;
+						app.name = response.data.transaction_data.transaction_name;
+						app.status = response.data.transaction_data.transaction_status;
+						app.$refs.posCheckout.replaceItems(response.data.transaction_data.transaction_items);
 						hideLoading(app.$swal);
 					})
 					.catch(function(error) {
@@ -154,6 +173,7 @@
 			},
 
 			onMounted : function () {
+				var app = this;
 				showLoading(this.$swal);
 
 				let id = this.$route.params.id;
@@ -161,13 +181,47 @@
 
 				// jika transaksi baru
 				if(id == "new"){
-					this.id = generateId(type.toUpperCase());
 					this.getProductServicesData();
+					this.$swal.fire({
+						title: 'Transaksi Atas Nama',
+						text : "Silahkan memasukan nama pelanggan disini..",
+						input: 'text',
+						inputLabel: 'Nama Pelanggan',
+						inputPlaceholder: 'Nama Pelanggan',
+						showCancelButton:true,
+						allowOutsideClick : false,
+					}).then(function(result){
+
+						if(result.value != undefined && result.value != ''){
+							app.id = generateId(type.toUpperCase());
+							app.name = result.value.toUpperCase();
+						}
+
+						else{
+							app.$swal.fire({
+								title: 'Batalkan Transaksi',
+								text: "Anda yakin ingin membatalkan transaksi",
+								icon: 'warning',
+								showCancelButton: true,
+								confirmButtonColor: '#d33',
+								cancelButtonColor: '#5e72e4',
+								confirmButtonText: 'Batalkan',
+								cancelButtonText: 'Lanjutkan Transaksi'
+							}).then((result) => {
+								if (result.isConfirmed) {
+									app.$router.replace('/admin/Transaksi');
+								}
+								else{
+									app.onMounted();
+								}
+							})
+						}	
+					});
 				}
 
 				// jika transaksi merupakan transaksi lama
 				else{
-					alert("tes");
+					app.getExistingTransaction(id);
 				}
 			}
 

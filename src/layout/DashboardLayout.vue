@@ -18,7 +18,7 @@
         <h6 class="navbar-heading text-muted ml-4 mb-0 mt-3">POS <i class="ni ni-bold-down"></i></h6>
         <span>
           <sidebar-item :link="{name: 'Inventaris', icon: 'ni ni-box-2 text-blue', path: '/admin/Inventaris'}"/>
-          <sidebar-item :link="{name: 'Kasir', icon: 'ni ni-credit-card text-blue', path: '/admin/Cashier'}"/>
+          <sidebar-item :link="{name: 'Kasir', icon: 'ni ni-credit-card text-blue', path: '/admin/Transaksi'}"/>
         </span>
 
       </template>

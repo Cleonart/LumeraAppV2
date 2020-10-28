@@ -36,6 +36,11 @@ export default new Router({
           component: () => import(/* webpackChunkName: "demo" */ './views/Master/Masterdata.vue')
         },
         {
+          path: '/receipt',
+          name: 'master',
+          component: () => import(/* webpackChunkName: "demo" */ './views/Pos/receipt.vue')
+        },
+        {
           path: '/master/:selector/:masteredit_mode',
           name: 'master',
           component: () => import(/* webpackChunkName: "demo" */ './views/Master/Masteredit.vue')

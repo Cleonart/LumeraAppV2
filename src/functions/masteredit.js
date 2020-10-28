@@ -140,13 +140,13 @@ function mastereditPatients(){
 			required : true,
 			text : "",
 			placeholder : "Masukan Alamat",
-			type : "textarea"
+			type : "text"
 		},
 		{
 			label : "No. HP",
 			required : true,
 			text : "",
-			type : "number"
+			type : "text"
 		},
 		{
 			label : "Tanggal Lahir",

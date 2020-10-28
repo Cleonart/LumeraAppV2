@@ -6,6 +6,7 @@
 					<div class="col">
 						<h3 class="mb-0 text-white">
 							Checkout
+							<p style="margin-bottom:0px;font-size:12px;font-weight:bold;margin-top:5px;">Atas Nama : {{name}}</p>
 						</h3>
 					</div>
 				</div>
@@ -70,9 +71,9 @@
 			</div>
 			<div class="container" style="margin-top:0px;padding-left:35px;padding-right:35px;margin-bottom:20px;margin-top:-10px">
 				<div class="row">
-					<base-button class="col" type="primary mt-2" @click="checkout('fixed')"><i class="ni ni-money-coins mr-2"></i>Bayar</base-button>
-					<base-button class="col" type="success mt-2" @click="checkout('update')">Simpan</base-button>
-					<base-button class="col" type="danger mt-2">Batal</base-button>
+					<base-button v-if="status != '200'" class="col" type="primary mt-2" @click="checkout('fixed')"><i class="ni ni-money-coins mr-2"></i>Bayar</base-button>
+					<base-button v-if="status != '200'"  class="col" type="success mt-2" @click="checkout('update')">Simpan</base-button>
+					<base-button class="col" type="danger mt-2">Kembali</base-button>
 				</div>
 			</div>
 		</div>
@@ -86,7 +87,7 @@
 
 	export default{
 		name : 'posCheckout',
-		props : ['id'],
+		props : ['id', 'name', 'status'],
 		data(){
 			return{
 				tableData : [],
@@ -126,9 +127,11 @@
 						transaction_id           : transaction_id,
 						transaction_amount       : transaction_amount,
 						transaction_mode         : mode,
+						transaction_name         : app.name,
 						transaction_created_date : "",
 						transaction_updated_date : "",
 						transaction_fixed_date   : "",
+						transaction_status       : "",
 					},
 					transaction_items : app.tableData
 				});
@@ -233,17 +236,8 @@
 				return "SUCCESS";
 			},
 
-			insertDataFromParent : function(){
-				alert("henlo");
-				this.tableData.push({
-					item_id    : "value.item_id",
-					item_name  : "value.item_name",
-					item_qty   : 1,
-					item_price : 200,
-					item_category : "value.item_category",
-					item_handler : "value.item_handler"
-				});
-				return "SUCCESS";
+			replaceItems : function(items){
+				this.tableData = items;
 			},
 
 			removeItem : function(id) {

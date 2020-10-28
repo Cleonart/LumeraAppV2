@@ -57,7 +57,8 @@
 
             <!-- text -->
             <span v-if="tableData.type == 'date'">
-                {{formatTanggal(tableData.data)}}
+                <span v-if="tableData.data == '0000-00-00'" :class="'badge badge-danger badge-lg'" style="font-size:11px">Belum Tersedia</span>
+                <span v-if="tableData.data != '0000-00-00'">{{formatTanggal(tableData.data)}}</span>
             </span>
 
              <!-- badge -->
@@ -81,8 +82,11 @@
                 <i class="ni ni-bullet-list-67" style="color:#000"></i>
               </a>
               <template>
-                <router-link :to="'/master/' + title + '/' + row[0].data">
+                <router-link v-if="title != 'Transaksi'" :to="'/master/' + title + '/' + row[0].data">
                   <a class="dropdown-item" style="color:#000">Buka Data</a>
+                </router-link>
+                <router-link v-else-if="title == 'Transaksi'" :to="'/pos/trx/' + row[0].data">
+                  <a class="dropdown-item" style="color:#000">Buka Transaksi</a>
                 </router-link>
                 <!--<a class="dropdown-item" href="#">Printout</a>-->
               </template>
@@ -90,6 +94,9 @@
           </td>
         </template>
       </base-table>
+      <p v-if="filteredData.length == 0"
+              style="font-weight:bold;text-align:center;"
+              class="mt-4 mb-3">Data tidak ditemukan :(</p>
     </div>
 
     <div class="card-footer d-flex justify-content-end"
@@ -149,6 +156,7 @@
 
         axios.get(url)
           .then(function(response){
+            console.log(response.data);
             app.Masterdata = response.data;
             app.settings   = app.Masterdata.settings;
             app.$swal.close();
