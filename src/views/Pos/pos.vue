@@ -3,11 +3,10 @@
 		<div class="row">
 			<div class="col-lg-7">
 				<h2>Buat Transaksi Baru</h2>
-				<badge type="warning mr-2">Transaksi Baru</badge>
+				<badge type="warning mr-2" v-if="$route.params.id = 'new'">Transaksi Baru</badge>
 				<badge type="primary">{{id}}</badge>
 
 				<div class="card shadow mt-4">
-
 					<div class="card-header border-0">
 						<div class="row align-items-center">
 							<div class="col">
@@ -62,7 +61,10 @@
 			</div>
 			
 			<div class="col-lg-5">
-				<posCheckout :name="name" :status="status" :id="id" ref="posCheckout"></posCheckout>
+				<posCheckout 	:name="name" 
+								:status="status" 
+								:id="id"
+								ref="posCheckout"></posCheckout>
 			</div>
 		</div>
 	</div>
@@ -137,31 +139,34 @@
 				}
 			},
 
-			getProductServicesData : function () {
+			getExistingTransaction : function(id="new"){
 				var app = this;
-				axios.get(baseURL + "/lumeraAPI/pos_purchase/getAllProductServiceData.php")
-					.then(function(response) {
-						app.itemData = response.data.embed_item;
-						app.staffData = response.data.embed_staff;
-						console.log(response);
-						//hideLoading(app.$swal);
-					})
-					.catch(function(error) {
-						console.log(error);
-					})
-			},
+				let url = "";
 
-			getExistingTransaction : function(id){
-				var app = this;
-				axios.get(baseURL + "/lumeraAPI/pos_purchase/getTransactionSalesById.php?id=" + id)
+				// new transaction
+				if(id == 'new'){
+					url = baseURL + "/lumeraAPI/pos_purchase/getTransactionSalesById.php";
+				}
+
+				// recent transaction
+				else{
+					url = baseURL + "/lumeraAPI/pos_purchase/getTransactionSalesById.php?id=" + id;
+				}
+
+				axios.get(url)
 					.then(function(response) {
 						app.itemData = response.data.embed_item;
 						app.staffData = response.data.embed_staff;
-						app.id = response.data.transaction_data.transaction_id;
-						app.name = response.data.transaction_data.transaction_name;
-						app.status = response.data.transaction_data.transaction_status;
-						app.$refs.posCheckout.replaceItems(response.data.transaction_data.transaction_items);
-						hideLoading(app.$swal);
+						if(id != 'new'){
+							app.id = response.data.transaction_data.transaction_id;
+							app.name = response.data.transaction_data.transaction_name;
+							app.status = response.data.transaction_data.transaction_status;
+							let items = response.data.transaction_data.transaction_items;
+							let disc  = response.data.transaction_data.transaction_disc;
+							let transaction_switch = response.data.transaction_data.transaction_switch;
+							app.$refs.posCheckout.replaceItems(items, disc, transaction_switch);
+							hideLoading(app.$swal);
+						}			
 					})
 					.catch(function(error) {
 						console.log(error);
@@ -181,7 +186,7 @@
 
 				// jika transaksi baru
 				if(id == "new"){
-					this.getProductServicesData();
+					this.getExistingTransaction();
 					this.$swal.fire({
 						title: 'Transaksi Atas Nama',
 						text : "Silahkan memasukan nama pelanggan disini..",

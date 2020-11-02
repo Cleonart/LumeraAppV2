@@ -17,26 +17,29 @@
 							tbody-classes="list"
 							:data="tableData">
 					<template slot="columns">
-						<th>Aksi</th>
 						<th>Nama PRD/SER</th>
 						<th>Jumlah</th>
 						<th>Sub Total</th>
 						<th>Total</th>
 					</template>
 					<template slot-scope="{row}">
-						<td>
+						<td style="display:flex">
 							<base-button @click="removeItem(row.item_id)" type="danger" icon="ni ni-fat-remove" style="height:37px;width:37px;padding-left:10px"></base-button>
-						</td>
-						<td>{{row.item_name}}<br/>
-							<span   v-if="row.item_category != 'Produk'"
-									style="opacity:0.5;font-size:12px">oleh {{row.item_handler}}</span>
+							<div class="align-items-center"> {{row.item_name}}<br/>
+								<span v-if="row.item_category != 'Produk'" style="opacity:0.5;font-size:12px">oleh {{row.item_handler}}</span>
+								<span v-if="row.item_category == 'Produk'" style="opacity:0.5;font-size:12px">Produk Kecantikan</span>
+							</div>
 						</td>
 						<td>
-							<input  class="pt-1 pb-1 pr-0" 
-									style="width:50px;text-align:center;border-radius:5px;border:none;background-color:#1c345d;color:#fff"
+							<input  class="pt-1 pl-2 pb-1 pr-0 input_number" 
 									type="number"
+									disabled 
 									v-model="row.item_qty"
 									max="10"/>
+							<span class="number_arrow_button" style="cursor:pointer">
+								<i @click="row.item_qty++" class="ni ni-bold-up ml-1 mr-1 up"></i>
+								<i @click="row.item_qty--" class="ni ni-bold-down down"></i>
+							</span>
 						</td>
 						<td>{{formatRupiah(row.item_price)}}</td>
 						<td>{{formatRupiah(row.item_price * row.item_qty)}}</td>
@@ -54,14 +57,31 @@
 					<div class="col-sm-6 text-right">{{formatRupiah(subTotal)}}</div>
 				</div>
 
-				<div class="row pl-4 pr-4 mb-1">
-					<div class="col-sm-6">Diskon</div>
-					<div class="col-sm-6 text-right text-success">- {{formatRupiah(disc)}}</div>
+				<div class="row pl-4 pr-4 mb-1 mt-3">
+					<div class="col-sm-6">Diskon ({{percentage_disc}}%)<br/><span style="opacity:0.5;font-size:12px">Persentase Diskon</span></div>
+					<div class="col-sm-6 text-right text-success">
+						<input  type="text" 
+								class="form-control pt-0 pb-0 text-white" 
+								v-model="disc"
+								style="height:35px;background-color:#1c345d;border:none">
+					</div>
 				</div>
 
+				<!-- pajak disembunyikan 
 				<div class="row pl-4 pr-4 mb-1">
 					<div class="col-sm-6">Pajak</div>
 					<div class="col-sm-6 text-right text-danger">+ {{formatRupiah(tax)}}</div>
+				</div>-->
+
+				<!-- switch pembayaran -->
+				<div class="row pl-4 pr-4 mb-1 mt-3">
+					<div class="col-sm-6">Switch<br/><span style="opacity:0.5;font-size:12px">Metode Pembayaran</span></div>
+					<div class="col-sm-6 text-right text-danger">
+						<select v-model="transaction_switch" class="form-control pt-0 pb-0 text-white" style="height:35px;background-color:#1c345d;border:none">
+							<option>Tunai</option>
+							<option>Kartu Debit</option>
+						</select>
+					</div>
 				</div>
 
 				<div class="row pl-4 pr-4 mt-3 mb-4">
@@ -80,6 +100,39 @@
 	</div>
 </template>
 
+<style type="text/css">
+
+	.input_number{
+		padding-right: 0;
+		width:30px;
+		text-align:center;
+		border-radius:5px;
+		border:none;
+		background-color:#1c345d;
+		color:#fff;
+		-webkit-user-select: none;
+        -webkit-touch-callout: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+	}
+
+	.number_arrow_button .up, .number_arrow_button .down{
+		transition: all 0.1s ease;
+	}
+
+	.number_arrow_button .up:hover{
+		transform: scale(1.05);
+		color: #2ecc71
+	}
+
+	.number_arrow_button .down:hover{
+		transform: scale(1.05);
+		color: #e74c3c
+	}
+
+</style>
+	
 <script> 
 
 	import {baseURL, formatRupiah, showLoading} from '../../../functions/universal.js';
@@ -94,7 +147,9 @@
 				subTotal : 0,
 				total    : 0,
 				tax      : 0,
-				disc     : 0
+				disc     : 0,
+				percentage_disc : 0,
+				transaction_switch   : "Tunai"
 			}
 		},
 
@@ -105,11 +160,34 @@
 					this.subTotal = 0;
 					for(var i = 0; i < this.tableData.length;i++){
 						console.log(value);
-						this.subTotal += this.tableData[i].item_price * this.tableData[i].item_qty;
+						if(this.tableData[i].item_category == "Produk"){
+							if(this.tableData[i].item_qty >= this.tableData[i].item_stock){
+								this.tableData[i].item_qty = this.tableData[i].item_stock;
+							}
+						}
+
+						if(this.tableData[i].item_qty == 0){
+							this.tableData.splice(i, 1);
+						}
+						else{
+							this.subTotal += this.tableData[i].item_price * this.tableData[i].item_qty;
+						}
 					}
 					this.total = this.subTotal + this.tax - this.disc;
+					this.percentage_disc = (this.disc / this.subTotal) * 100;
 				},
 				deep:true
+			},
+
+			disc : function(val){
+				if(val > this.subTotal){
+					alert("diskon tidak bisa lebih tinggi dari total");
+					this.disc = this.subTotal;
+				}
+				else{
+					this.total = this.subTotal - val;
+					this.percentage_disc = (this.disc / this.subTotal) * 100;
+				}
 			}
 
 		},
@@ -132,6 +210,8 @@
 						transaction_updated_date : "",
 						transaction_fixed_date   : "",
 						transaction_status       : "",
+						transaction_disc         : app.disc,
+						transaction_switch		 : app.transaction_switch
 					},
 					transaction_items : app.tableData
 				});
@@ -155,40 +235,81 @@
 						title = "Anda yakin akan melakukan pembayaran transaksi ini?";
 						text  = "Transaksi akan dicatat setelah pembayaran dikonfirmasi, perubahan data sudah tidak bisa dilakukan setelah proses ini";
 						confirmText = "Ya, Bayar";
+
+						// jika tunai maka jangan lupa uang kembalian
+						if(app.transaction_switch == 'Tunai'){
+							this.$swal.fire({
+								title : "Jumlah bayar",
+								text : "Total Pembayaran " +  app.formatRupiah(app.total),
+								icon : "warning",
+								input: 'text',
+								inputLabel: 'Nominal Bayar',
+								inputPlaceholder: '0',
+								showCancelButton: true,
+								inputValidator : (value) => {
+									let pay_amount = parseInt(value);
+									
+									if(pay_amount != undefined && pay_amount != ''){
+
+										if(pay_amount < app.total){
+											return "Jumlah pembayaran kurang";
+										}
+
+										axios.post(url, json_data)
+											.then(function(response){
+												console.log(response);
+												app.$swal.fire("Pembayaran Berhasil", "Uang kembalian : " + (pay_amount - app.total), "success");
+											})
+											.catch(function(error){
+												console.log(error);
+											})
+									}
+									else{
+										return "Jumlah pembayaran harus diisi";
+									}
+								}
+							})
+						}
 					}
 
 					else if(mode == "update"){
 						title = "Anda yakin akan menyimpan transaksi ini?";
 						text  = "Transaksi masih dapat dirubah sesuai dengan kebutuhan";
 						confirmText = "Ya, Simpan";
-					}
 
-					this.$swal.fire({
-						title: title,
-						text: text,
-						icon: 'warning',
-						showCancelButton: true,
-						confirmButtonColor: '#5e72e4',
-						cancelButtonColor: '#d33',
-						confirmButtonText: confirmText
-					}).then((result) => {
-						if (result.isConfirmed) {
-							showLoading(this.$swal);
-							axios.post(url, json_data)
-								.then(function(response){
-									console.log(response);
-									app.$swal("Proses Berhasil", "Transaksi dan Perubahan data berhasil dilakukan", "success");
-								})
-								.catch(function(error){
-									console.log(error);
-								})
-						}
-					})
+						// payment confirmation
+						this.$swal.fire({
+							title: title,
+							text: text,
+							icon: 'warning',
+							showCancelButton: true,
+							confirmButtonColor: '#5e72e4',
+							cancelButtonColor: '#d33',
+							confirmButtonText: confirmText
+						}).then((result) => {
+							if (result.isConfirmed) {
+								showLoading(this.$swal);
+								app.sendCheckoutToServer(url, json_data);
+							}
+						})
+					}
 				}
 			},
 
 			cancel : function () {
 				
+			},
+
+			sendCheckoutToServer : function (url, json_data) {
+				let app = this;
+				axios.post(url, json_data)
+					.then(function(response){
+						console.log(response);
+						app.$swal("Proses Berhasil", "Transaksi dan Perubahan data berhasil dilakukan", "success");
+					})
+					.catch(function(error){
+						console.log(error);
+					})
 			},
 
 			addToCheckout : function (value) {
@@ -227,6 +348,7 @@
 					item_id    : value.item_id,
 					item_name  : value.item_name,
 					item_qty   : 1,
+					item_stock : value.item_stock,
 					item_price : value.item_price,
 					item_category : value.item_category,
 					item_handler_id : handler_id,
@@ -236,8 +358,10 @@
 				return "SUCCESS";
 			},
 
-			replaceItems : function(items){
+			replaceItems : function(items, disc, switch_data){
 				this.tableData = items;
+				this.disc = disc;
+				this.transaction_switch = switch_data;
 			},
 
 			removeItem : function(id) {

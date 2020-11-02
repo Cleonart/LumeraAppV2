@@ -1,5 +1,5 @@
 
-export let baseURL = "https://lumeramanado.com";
+export let baseURL = "http://192.168.1.6";
 
 // generate random number id
 // return INT - Random Number between 1000000 to 9999999
@@ -37,7 +37,15 @@ export function getTodayDate(prefix="none") {
 		return date + "." + month + "." + year;
 	}
 
-	return date + prefix + month + prefix + year;
+	return date + prefix + (month + 1) + prefix + year;
+}
+
+export function getTodayDateUniv(prefix="-"){
+	var calender = new Date();
+	var date = calender.getDate();
+	var month = calender.getMonth();
+	var year = calender.getFullYear();
+	return year + prefix + (month + 1) + prefix + date;
 }
 
 export function generatePdfFilename(type, id){
