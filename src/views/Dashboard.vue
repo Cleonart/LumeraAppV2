@@ -130,12 +130,17 @@
               </div>
         </div>
 
+        <button @click="print('TRX11212', 10000, item_data)">Print</button>
+        <Receipt ref="rec"></Receipt>
+
     </div>
 </template>
 <script>
+
   // Charts
   import * as chartConfigs from '@/components/Charts/config';
   import LineChart from '@/components/Charts/LineChart';
+  import Receipt from './Pos/receipt.vue';
 
   // universal
   import {baseURL, getTodayDateUniv, formatRupiah} from '../functions/universal.js';
@@ -150,10 +155,36 @@
   export default {
     components: {
       LineChart,
-      flatPicker
+      flatPicker,
+      Receipt
     },
     data() {
       return {
+        item_data : [
+          {
+            id     : '11212',
+            name   : 'Lemonilo',
+            qty    : 1,
+            type   : "Klinik",
+            handle : "Michael Rockefeler",
+            price  : 10000 
+          },
+          {
+            id     : '11212',
+            name   : 'Lemonilo',
+            qty    : 1,
+            type   : "Klinik",
+            handle : "Michael Rockefeler",
+            price  : 2000 
+          },
+          {
+            id    : '11214',
+            name  : 'Lemonila',
+            qty   : 200,
+            type  : "Produk",
+            price : 1000000 
+          }
+        ], 
         start_date : '',
         end_date : '',
         overview_data : {
@@ -201,6 +232,10 @@
 
       formatRupiah : function(value) {
         return formatRupiah(value.toString(), "Rp. ");
+      },
+
+      print : function (transaction_id, transaction_disc, transaction_item) {
+        this.$refs.rec.print(transaction_id, transaction_disc, transaction_item);
       },
 
       getReportData : function(){

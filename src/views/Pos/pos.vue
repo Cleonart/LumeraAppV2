@@ -20,7 +20,7 @@
 									<option>Layanan Klinik</option>
 									<option>Layanan Salon</option>
 									<option>Produk</option>
-								</select> 
+								</select>
 							</div>
 						</div>
 						<hr class="mt-3 mb-3">
