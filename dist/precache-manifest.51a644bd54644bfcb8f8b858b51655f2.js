@@ -1,15 +1,15 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "00f52166052a880b99bc",
+    "revision": "88086abe8a909905f2da",
     "url": "/css/app.5ee4a7b4.css"
   },
   {
-    "revision": "7c7a825d39e4d64a90f7",
-    "url": "/css/chunk-vendors.1d3120a9.css"
+    "revision": "af5900bcd589fcc7252f",
+    "url": "/css/chunk-vendors.b4222b67.css"
   },
   {
-    "revision": "f69f28950fe33df88f80",
-    "url": "/css/demo.7c58104d.css"
+    "revision": "83a83aaacc6bd2dcf8a4",
+    "url": "/css/demo.ce2e03bc.css"
   },
   {
     "revision": "2569aaea6eaaf8cd210db7f2fa016743",
@@ -38,6 +38,14 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
     "revision": "e0ea3f1916671872498288dc2bd40f06",
     "url": "/img/brand/white.png"
+  },
+  {
+    "revision": "859d8c505f0f1fe06b69df806d235504",
+    "url": "/img/lumera_bw.png"
+  },
+  {
+    "revision": "0841767ddfb7ed82fc4f97ad7a3a8006",
+    "url": "/img/lumera_color.0841767d.jpg"
   },
   {
     "revision": "46abbc4a676739dbd61f8a305cb63fd8",
@@ -96,20 +104,20 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/img/theme/vue.jpg"
   },
   {
-    "revision": "1b6bfc87e2cdc19024383a9acc771433",
+    "revision": "13a4b7bf09d2ff3cc2a84c3e4db4befb",
     "url": "/index.html"
   },
   {
-    "revision": "00f52166052a880b99bc",
-    "url": "/js/app.5769a085.js"
+    "revision": "88086abe8a909905f2da",
+    "url": "/js/app.5a149a6a.js"
   },
   {
-    "revision": "7c7a825d39e4d64a90f7",
-    "url": "/js/chunk-vendors.dbf01bb2.js"
+    "revision": "af5900bcd589fcc7252f",
+    "url": "/js/chunk-vendors.2afe9942.js"
   },
   {
-    "revision": "f69f28950fe33df88f80",
-    "url": "/js/demo.d3990a1e.js"
+    "revision": "83a83aaacc6bd2dcf8a4",
+    "url": "/js/demo.86fb0cdc.js"
   },
   {
     "revision": "2c6190eb814d2dd4d454ae170c43c7c2",

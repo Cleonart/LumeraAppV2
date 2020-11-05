@@ -58,7 +58,7 @@
             <!-- text -->
             <span v-if="tableData.type == 'date'">
                 <span v-if="tableData.data == '0000-00-00'" :class="'badge badge-danger badge-lg'" style="font-size:11px">Belum Tersedia</span>
-                <span v-if="tableData.data != '0000-00-00'">{{formatTanggal(tableData.data)}}</span>
+                <span v-else>{{formatTanggal(tableData.data)}}</span>
             </span>
 
              <!-- badge -->
@@ -180,8 +180,10 @@
     computed: {
       filteredData() {
         return this.Masterdata.raw_data.filter(tableData => {
-          let data = tableData[this.settings.search_index].data.toLowerCase().includes(this.search.toLowerCase()); 
-          return data;
+          let data = tableData[this.settings.search_index].data.toLowerCase().includes(this.search.toLowerCase());
+          if(data){
+            return tableData;
+          }
         })
       }
     },

@@ -67,7 +67,7 @@
 								ref="posCheckout"></posCheckout>
 			</div>
 		</div>
-
+		<!--
 		<div>
           <base-button type="primary" @click="modals.modal0 = true">Launch demo modal</base-button>
           <Modal @close="setName()" :show.sync="modals.modal0">
@@ -78,7 +78,7 @@
 			<input @click="setName()" type="button" class="mt-2 btn btn-primary" value="Simpan" />
 			<input @click="cancel()" type="button" class="mt-2 btn btn-danger" value="Kembali ke Dashboard" />
           </Modal>
-        </div>
+        </div>-->
 
 	</div>
 </template>
@@ -87,27 +87,17 @@
 	
 	import {generateId, baseURL, formatRupiah, showLoading, hideLoading} from '../../functions/universal.js';
 	import posCheckout from './Components/posCheckout';
-	import Modal from '../../components/Modal';
 	const axios = require('axios');
 	
 	export default {
 		name: 'projects-table',
 		data(){
 			return{
-
-				modals : {
-					modal0 : false
-				},
-
-				error : {
-					customer : false
-				},
 				customerNames : [],
 				title : '',
 				id : '',
 				status : '',
 				name : '',
-				name_modal : '',
 				selectBar : 'Layanan Salon',
 				searchBar : '',
 				itemData : [],
@@ -203,25 +193,6 @@
 				return formatRupiah(value, "Rp. ");
 			},
 
-			setName : function(){
-				
-				if(this.name_modal == ""){
-					this.modals.modal0 = true;
-					this.error.customer = true;
-				}
-				else{
-					this.name = this.name_modal.toUpperCase();
-					this.modals.modal0 = false;
-					this.error.customer = false;
-				}
-
-			},
-
-			cancel : function(){
-				this.modals.modal0 = false;
-				this.$router.replace('/');
-			},
-
 			onMounted : function () {
 				var app = this;
 				showLoading(this.$swal);
@@ -308,8 +279,7 @@
 		},
 
 		components: {
-			posCheckout,
-			Modal
+			posCheckout
 		}
 	}
 
