@@ -70,14 +70,13 @@
 
 		<div>
           <base-button type="primary" @click="modals.modal0 = true">Launch demo modal</base-button>
-          <Modal :show.sync="modals.modal0" v-on:keyup.enter="setName">
+          <Modal @close="setName()" :show.sync="modals.modal0">
             <h2 class="mb-0 mt-0">Masukan Nama Pelanggan</h2>
             <small class="text-muted mb-2">Ketik atau pilih nama pelanggan pada kotak di bawah ini</small>
-            <form @keyup.enter="setName">
-				<v-select v-on:keyup.enter="setName" v-model="name" push-tags taggable class="mt-3" :options="customerNames"></v-select>
-				<base-alert v-if="error.customer" type="danger"><strong>Danger!</strong> This is a danger alert—check it out!</base-alert>
-				<input type="button" class="btn btn-primary" value="Simpan" @keyup.enter="setName"  />
-            </form>
+            <v-select v-on:keyup.enter="setName" v-model="name_modal" push-tags taggable class="mt-3" :options="customerNames"></v-select>
+			<base-alert class="mt-1" v-if="error.customer" type="danger"><strong>Perhatian</strong> Anda harus mengisi nama pelanggan untuk melanjutkan</base-alert>
+			<input @click="setName()" type="button" class="mt-2 btn btn-primary" value="Simpan" />
+			<input @click="cancel()" type="button" class="mt-2 btn btn-danger" value="Kembali ke Dashboard" />
           </Modal>
         </div>
 
@@ -95,9 +94,11 @@
 		name: 'projects-table',
 		data(){
 			return{
+
 				modals : {
 					modal0 : false
 				},
+
 				error : {
 					customer : false
 				},
@@ -106,6 +107,7 @@
 				id : '',
 				status : '',
 				name : '',
+				name_modal : '',
 				selectBar : 'Layanan Salon',
 				searchBar : '',
 				itemData : [],
@@ -202,7 +204,22 @@
 			},
 
 			setName : function(){
-				alert("henlo");
+				
+				if(this.name_modal == ""){
+					this.modals.modal0 = true;
+					this.error.customer = true;
+				}
+				else{
+					this.name = this.name_modal.toUpperCase();
+					this.modals.modal0 = false;
+					this.error.customer = false;
+				}
+
+			},
+
+			cancel : function(){
+				this.modals.modal0 = false;
+				this.$router.replace('/');
 			},
 
 			onMounted : function () {
