@@ -48,6 +48,17 @@ export function getTodayDateUniv(prefix="-"){
 	return year + prefix + (month + 1) + prefix + date;
 }
 
+export function getDateAndTime(prefix="-"){
+	var calender = new Date();
+	var date = calender.getDate();
+	var month = calender.getMonth();
+	var year = calender.getFullYear();
+	var hours = calender.getHours();
+	var minutes = calender.getMinutes();
+	var seconds = calender.getSeconds();
+	return date + prefix + (month + 1) + prefix + year + " " + hours + ":" + minutes + ":" + seconds;
+}
+
 export function generatePdfFilename(type, id){
 	return type + "_" + id + "_" + getTodayDate() + ".pdf"; 
 }

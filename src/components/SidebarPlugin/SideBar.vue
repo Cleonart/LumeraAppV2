@@ -7,7 +7,7 @@
                 <span class="navbar-toggler-icon"></span>
             </navbar-toggle-button>
             <router-link class="navbar-brand" to="/">
-                <img :src="logo" class="navbar-brand-img" alt="...">
+                <img src="../../assets/lumera_color.jpg" style="width: 110px;max-height: 110px;border-radius: 4px;padding:6px;background-color: #5f68ab" alt="...">
             </router-link>
 
             <slot name="mobile-right">
@@ -76,8 +76,8 @@
     props: {
       logo: {
         type: String,
-        default: 'img/brand/green.png',
-        description: 'Sidebar app logo'
+        default: 'img/brand/lumera_color.jpg',
+        description: 'Lumera Logo'
       },
       autoClose: {
         type: Boolean,

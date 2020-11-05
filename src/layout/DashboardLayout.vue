@@ -1,9 +1,9 @@
 <template>
   <div class="wrapper" :class="{ 'nav-open': $sidebar.showSidebar }">
     <side-bar :background-color="sidebarBackground" short-title="Argon" title="Furniture App">
-      <template slot="links">
+      <template slot="links" >
 
-        <sidebar-item :link="{name: 'Dashboard', icon: 'ni ni-tv-2 text-blue', path: '/dashboard'}"/>
+        <sidebar-item style="margin-top: -10px;" :link="{name: 'Dashboard', icon: 'ni ni-tv-2 text-blue', path: '/dashboard'}"/>
         <sidebar-item :link="{name: 'Transaksi Baru', icon: 'ni ni-money-coins text-blue', path: '/pos/trx/new'}"/>
         <sidebar-item :link="{name: 'Inventaris Baru', icon: 'ni ni-money-coins text-blue', path: '/pos/inv/new'}"/>
 

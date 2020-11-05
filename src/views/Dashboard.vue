@@ -32,7 +32,7 @@
 
             <!-- Card stats -->
             <div class="row">
-                <div class="col-xl-3 col-lg-6">
+                <div class="col-xl-6 col-lg-6">
                     <stats-card title="Pendapatan"
                                 type="gradient-red"
                                 :sub-title="formatRupiah(overview_data.total)"
@@ -43,7 +43,7 @@
                     </stats-card>
                 </div>
                 
-                <div class="col-xl-3 col-lg-6">
+                <div class="col-xl-6 col-lg-6">
                     <stats-card title="Transaksi"
                                 type="gradient-green"
                                 :sub-title="overview_data.total_transaksi"
@@ -51,33 +51,6 @@
                                 class="mb-4 mb-xl-0">
                         <template slot="footer">
                             <span class="text-nowrap">Total Transaksi</span>
-                        </template>
-                    </stats-card>
-                </div>
-
-                <div class="col-xl-3 col-lg-6">
-                    <stats-card title="Produk"
-                                type="gradient-orange"
-                                sub-title="2,356"
-                                icon="ni ni-chart-pie-35"
-                                class="mb-4 mb-xl-0">
-                        <template slot="footer">
-                            <span class="text-nowrap">Penjualan produk kecantikan</span>
-                        </template>
-                    </stats-card>
-                </div>
-                
-                <div class="col-xl-3 col-lg-6">
-                    <stats-card title="Performance"
-                                type="gradient-info"
-                                sub-title="49,65%"
-                                icon="ni ni-chart-bar-32"
-                                class="mb-4 mb-xl-0"
-                    >
-
-                        <template slot="footer">
-                            <span class="text-success mr-2"><i class="fa fa-arrow-up"></i> 54.8%</span>
-                            <span class="text-nowrap">Since last month</span>
                         </template>
                     </stats-card>
                 </div>
@@ -129,18 +102,14 @@
                 </div>
               </div>
         </div>
-
-        <button @click="print('TRX11212', 10000, item_data)">Print</button>
-        <Receipt ref="rec"></Receipt>
-
-    </div>
+        
+      </div>
 </template>
 <script>
 
   // Charts
   import * as chartConfigs from '@/components/Charts/config';
   import LineChart from '@/components/Charts/LineChart';
-  import Receipt from './Pos/receipt.vue';
 
   // universal
   import {baseURL, getTodayDateUniv, formatRupiah} from '../functions/universal.js';
@@ -155,36 +124,11 @@
   export default {
     components: {
       LineChart,
-      flatPicker,
-      Receipt
+      flatPicker
     },
     data() {
       return {
-        item_data : [
-          {
-            id     : '11212',
-            name   : 'Lemonilo',
-            qty    : 1,
-            type   : "Klinik",
-            handle : "Michael Rockefeler",
-            price  : 10000 
-          },
-          {
-            id     : '11212',
-            name   : 'Lemonilo',
-            qty    : 1,
-            type   : "Klinik",
-            handle : "Michael Rockefeler",
-            price  : 2000 
-          },
-          {
-            id    : '11214',
-            name  : 'Lemonila',
-            qty   : 200,
-            type  : "Produk",
-            price : 1000000 
-          }
-        ], 
+        
         start_date : '',
         end_date : '',
         overview_data : {

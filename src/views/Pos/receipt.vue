@@ -1,52 +1,31 @@
 <template>	
 		<div>	
-			<p @click="print('TRX11212', 10000, data)">Tes</p>
+
 		</div>
 </template>
 <script>
-	import {formatRupiah} from '../../functions/universal.js';
+	import {formatRupiah, getDateAndTime} from '../../functions/universal.js';
 
 	export default{
 		data(){
 			return{
-				data : [
-					{
-						id    : '11212',
-						name  : 'Lemonilo',
-						qty   : 3,
-						price : 10000 
-					},
-					{
-						id    : '11212',
-						name  : 'Lemonilo',
-						qty   : 5,
-						price : 2000 
-					},
-					{
-						id    : '11214',
-						name  : 'Lemonila',
-						qty   : 7,
-						price : 1000000 
-					}
-				]
+				data : []
 			}
 		},
 		methods : {
 
-			print : function (transaction_id, transaction_disc, transaction_item) {
+			print : function (transaction_id, transaction_disc, transaction_item, transaction_name) {
 				let id      = transaction_id;
 				let overall = 0;
 				let disc    = transaction_disc;
 				this.data   = transaction_item;
-
-				let date_time = new Date();
-				var date = date_time.getFullYear()+'-'+(date_time.getMonth()+1)+'-'+date_time.getDate();
-				var time = date_time.getHours() + ":" + date_time.getMinutes() + ":" + date_time.getSeconds();
 				
 				this.receipt = window.open("", "receipt", "width=300,height=300");
-				this.receipt.document.write("<p style='margin-bottom:0px;font-size:13px;text-align:center'>Wenang - Manado 082190886467<br/> Jl. Garuda No.10, Mahakeret Barat</p>");
-				this.receipt.document.write("<p style='margin-top:0px;margin-bottom:0px;font-size:13px;text-align:center'>Tgl / Jam : "+date + " " + time +"</p>");
+				this.receipt.document.write("<p style='text-align:center'><img src='./img/lumera_bw.png' style='width:50px;' /></p>");
+				this.receipt.document.write("<p style='margin-bottom:0px;font-size:13px;margin-top:-10px; text-align:center'>Wenang - Manado 082190886467<br/> Jl. Garuda No.10, Mahakeret Barat</p>");
+				this.receipt.document.write("<p style='margin-top:0px;margin-bottom:0px;font-size:13px;text-align:center'>Tgl / Jam : "+ getDateAndTime() +"</p>");
 				this.receipt.document.write("<p style='margin-top:0px;margin-bottom:0px;font-size:13px;text-align:center'>No Struk : "+id+"</p>");
+				this.receipt.document.write("<p style='margin-top:0px;margin-bottom:0px;font-size:13px;text-align:center'>Nama : "+transaction_name+"</p>");
 				this.receipt.document.write("<p style='margin-top:0px;margin-bottom:0px'>-----------------------------------------</p>");
 
 				let table  = "<table style='border:none;font-size:13px;'>";
@@ -54,25 +33,25 @@
 				// item
 				for(var i = 0; i < this.data.length; i++){
 					table     += "<tr>";
-					table     += "<td>" + this.data[i].id + "</td>";
-					table     += "<td colspan='4'>" + this.data[i].name + "</td>";
+					table     += "<td style='display: block;width: 40px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;'>" + this.data[i].item_id + "</td>";
+					table     += "<td colspan='4'>" + this.data[i].item_name + "</td>";
 					table     += "</tr>";
 
-					if(this.data[i].type != "Produk"){
+					if(this.data[i].item_category != "Produk"){
 						table += "<tr>";
 						table += "<td></td>";
-						table += "<td colspan='4'>" + this.data[i].handle + "</td>";
+						table += "<td colspan='4'>" + this.data[i].item_handler + "</td>";
 						table += "</tr>";
 					}
 
 					table     += "<tr>";
 					table     += "<td></td>";
-					table     += "<td>" + this.data[i].qty + "</td>";
+					table     += "<td>" + this.data[i].item_qty + "</td>";
 					table     += "<td> x </td>";
-					table     += "<td style='text-align:right'>" + formatRupiah(this.data[i].price.toString()) + "</td>";
-					table     += "<td>: " + formatRupiah((this.data[i].price * this.data[i].qty).toString()) + "</td>";
+					table     += "<td style='text-align:right'>" + formatRupiah(this.data[i].item_price.toString()) + "</td>";
+					table     += "<td>: " + formatRupiah((this.data[i].item_price * this.data[i].item_qty).toString()) + "</td>";
 					table     += "<tr>";
-					overall   += (this.data[i].price * this.data[i].qty);
+					overall   += (this.data[i].item_price * this.data[i].item_qty);
 				}
 
 				// sub total
@@ -83,7 +62,7 @@
 
 				// diskon
 				table += "<tr>";
-				table += "<td colspan='4' style='text-align:right'>Diskon</td>";
+				table += "<td colspan='4' style='text-align:right'>Diskon (" +  ((disc / overall) * 100) + "%)</td>";
 				table += "<td>: " + formatRupiah(disc.toString()); + "</td>";
 				table += "</tr>";
 

@@ -67,6 +67,20 @@
 								ref="posCheckout"></posCheckout>
 			</div>
 		</div>
+
+		<div>
+          <base-button type="primary" @click="modals.modal0 = true">Launch demo modal</base-button>
+          <Modal :show.sync="modals.modal0" v-on:keyup.enter="setName">
+            <h2 class="mb-0 mt-0">Masukan Nama Pelanggan</h2>
+            <small class="text-muted mb-2">Ketik atau pilih nama pelanggan pada kotak di bawah ini</small>
+            <form @keyup.enter="setName">
+				<v-select v-on:keyup.enter="setName" v-model="name" push-tags taggable class="mt-3" :options="customerNames"></v-select>
+				<base-alert v-if="error.customer" type="danger"><strong>Danger!</strong> This is a danger alert—check it out!</base-alert>
+				<input type="button" class="btn btn-primary" value="Simpan" @keyup.enter="setName"  />
+            </form>
+          </Modal>
+        </div>
+
 	</div>
 </template>
 
@@ -74,16 +88,24 @@
 	
 	import {generateId, baseURL, formatRupiah, showLoading, hideLoading} from '../../functions/universal.js';
 	import posCheckout from './Components/posCheckout';
+	import Modal from '../../components/Modal';
 	const axios = require('axios');
 	
 	export default {
 		name: 'projects-table',
 		data(){
 			return{
+				modals : {
+					modal0 : false
+				},
+				error : {
+					customer : false
+				},
+				customerNames : [],
 				title : '',
 				id : '',
 				status : '',
-				name : 'Nama Pelanggan',
+				name : '',
 				selectBar : 'Layanan Salon',
 				searchBar : '',
 				itemData : [],
@@ -155,8 +177,10 @@
 
 				axios.get(url)
 					.then(function(response) {
+						console.log(response);
 						app.itemData = response.data.embed_item;
 						app.staffData = response.data.embed_staff;
+						app.customerNames = response.data.embed_name;
 						if(id != 'new'){
 							app.id = response.data.transaction_data.transaction_id;
 							app.name = response.data.transaction_data.transaction_name;
@@ -177,13 +201,17 @@
 				return formatRupiah(value, "Rp. ");
 			},
 
+			setName : function(){
+				alert("henlo");
+			},
+
 			onMounted : function () {
 				var app = this;
 				showLoading(this.$swal);
 
-				let id = this.$route.params.id;
+				let id   = this.$route.params.id;
 				let type = this.$route.params.type;
-
+				
 				// jika transaksi baru
 				if(id == "new"){
 					this.getExistingTransaction();
@@ -247,7 +275,7 @@
 			}
 		},
 
-		mounted(){
+		created(){
 			this.onMounted();
 		},
 
@@ -263,7 +291,8 @@
 		},
 
 		components: {
-			posCheckout
+			posCheckout,
+			Modal
 		}
 	}
 

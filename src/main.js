@@ -21,10 +21,14 @@ import router from './router'
 import './registerServiceWorker'
 import ArgonDashboard from './plugins/argon-dashboard'
 import VueSweetalert2 from 'vue-sweetalert2';
+import vSelect from 'vue-select'
+
  
 // If you don't need the styles, do not connect
 import 'sweetalert2/dist/sweetalert2.min.css';
- 
+ import 'vue-select/dist/vue-select.css';
+
+Vue.component('v-select', vSelect)
 Vue.use(VueSweetalert2);
 Vue.config.productionTip = false
 

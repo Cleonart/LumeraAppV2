@@ -11,6 +11,7 @@
 					</div>
 				</div>
 			</div>
+
 			<div class="table-responsive pb-2" style="height:320px;">
 				<base-table class="table align-items-center table-flush table-dark"
 							thead-classes="thead-dark text-white"
@@ -97,6 +98,9 @@
 				</div>
 			</div>
 		</div>
+
+		<Receipt ref="receipt"></Receipt>
+
 	</div>
 </template>
 
@@ -135,11 +139,15 @@
 	
 <script> 
 
+	import Receipt from '../receipt.vue';
 	import {baseURL, formatRupiah, showLoading} from '../../../functions/universal.js';
 	const axios = require('axios');
 
 	export default{
 		name : 'posCheckout',
+		components : {
+			Receipt
+		},
 		props : ['id', 'name', 'status'],
 		data(){
 			return{
@@ -215,7 +223,7 @@
 					},
 					transaction_items : app.tableData
 				});
-
+				
 				// validate checkout items
 				// keranjang kosong
 				if(this.tableData.length == 0){
@@ -258,7 +266,12 @@
 										axios.post(url, json_data)
 											.then(function(response){
 												console.log(response);
-												app.$swal.fire("Pembayaran Berhasil", "Uang kembalian : " + (pay_amount - app.total), "success");
+												app.$refs.receipt.print(app.id, app.disc, app.tableData, app.name);
+												app.$swal.fire("Pembayaran Berhasil", "Uang kembalian : " + (pay_amount - app.total), "success")
+													.then(function(response){
+														console.log(response);
+														app.$router.replace('/');
+													});	
 											})
 											.catch(function(error){
 												console.log(error);
