@@ -1,5 +1,5 @@
 
-export let baseURL = "http://lumeramanado.com";
+export let baseURL = "https://lumeramanado.com";
 
 // generate random number id
 // return INT - Random Number between 1000000 to 9999999
