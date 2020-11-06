@@ -21,7 +21,6 @@
 				this.data   = transaction_item;
 				
 				this.receipt = window.open("", "receipt", "width=300,height=300");
-				this.receipt.document.write("<p style='text-align:center'><img src='./img/lumera_bw.png' style='width:50px;' /></p>");
 				this.receipt.document.write("<p style='margin-bottom:0px;font-size:13px;margin-top:-10px; text-align:center'>Wenang - Manado 082190886467<br/> Jl. Garuda No.10, Mahakeret Barat</p>");
 				this.receipt.document.write("<p style='margin-top:0px;margin-bottom:0px;font-size:13px;text-align:center'>Tgl / Jam : "+ getDateAndTime() +"</p>");
 				this.receipt.document.write("<p style='margin-top:0px;margin-bottom:0px;font-size:13px;text-align:center'>No Struk : "+id+"</p>");
